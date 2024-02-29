@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  token: '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',
+  token: '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',
   baseUrl: 'https://api.github.com',
 };
