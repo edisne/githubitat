@@ -5,7 +5,6 @@ import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, catchError, debounceTime, distinctUntilChanged, filter, map, of, skip, switchMap } from 'rxjs';
-import { Pagination } from '../core/interfaces/pagination';
 import { User } from '../core/models/user';
 import { GithubService } from '../core/services/github.service';
 import { ToastService } from '../core/services/toast.service';

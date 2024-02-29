@@ -7,15 +7,23 @@ import { Observable, Subscription, switchMap } from 'rxjs';
 import { GitHubRepository } from 'src/app/core/models/repository';
 import { User } from 'src/app/core/models/user';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { loadFollowers, loadRepositories, loadUser } from 'src/app/core/store/github.actions';
-import { selectGithubFollowers, selectGithubRepositories, selectGitubUser } from 'src/app/core/store/github.selector';
+import {
+  loadFollowers,
+  loadRepositories,
+  loadUser,
+} from 'src/app/core/store/github.actions';
+import {
+  selectGithubFollowers,
+  selectGithubRepositories,
+  selectGitubUser,
+} from 'src/app/core/store/github.selector';
 import { slideInAnimation } from 'src/app/layout/animations';
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.scss'],
-  animations: [slideInAnimation]
+  animations: [slideInAnimation],
 })
 export class UserDetailsComponent implements OnInit, OnDestroy {
   user$ = new Observable<User>();
@@ -30,34 +38,35 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private toast: ToastService,
     private router: Router,
-    private location: Location,
-  ) {
-  }
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
-    this.routeParamSubscription = this.route.paramMap.pipe(
-      switchMap(params => {
-        const username = params.get('username');
-        this.animateState = username!;
-        return username ? [username] : [];
-      })
-    ).subscribe(username => {
-      if (username) {
-        this.store.dispatch(loadUser({ username }));
-        this.route.queryParams.subscribe(params => {
-          if (params['tab']) {
-            this.activeTabIndex = parseInt(params['tab'], 10);
-          } 
-          this.onTabChange(this.activeTabIndex);
-        });
-      } else {
-        this.toast.error('Error loading user');
-      }
-    });
+    this.routeParamSubscription = this.route.paramMap
+      .pipe(
+        switchMap((params) => {
+          const username = params.get('username');
+          this.animateState = username!;
+          return username ? [username] : [];
+        })
+      )
+      .subscribe((username) => {
+        if (username) {
+          this.store.dispatch(loadUser({ username }));
+          this.route.queryParams.subscribe((params) => {
+            if (params['tab']) {
+              this.activeTabIndex = parseInt(params['tab'], 10);
+            }
+            this.onTabChange(this.activeTabIndex);
+          });
+        } else {
+          this.toast.error('Error loading user');
+        }
+      });
 
     this.user$ = this.store.select(selectGitubUser);
     this.followers$ = this.store.select(selectGithubFollowers);
-    this.repositories$ = this.store.select(selectGithubRepositories)
+    this.repositories$ = this.store.select(selectGithubRepositories);
   }
 
   showUserDetails(user: User) {
@@ -66,8 +75,8 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 
   onTabChange(tabIndex: number) {
     const username = this.animateState;
-    tabIndex === 0 
-      ? this.store.dispatch(loadRepositories({ username })) 
+    tabIndex === 0
+      ? this.store.dispatch(loadRepositories({ username }))
       : this.store.dispatch(loadFollowers({ username }));
     const url = this.location.path();
     const urlWithoutParams = url.split('?')[0];
@@ -82,5 +91,4 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
       this.routeParamSubscription.unsubscribe();
     }
   }
-
 }
