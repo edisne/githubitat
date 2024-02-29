@@ -8,7 +8,7 @@ import {
   selectUserLoading,
   selectUsersLoading
 } from './core/store/github.selector';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, AfterViewChecked{
 
   isLoading$: Observable<boolean>;
   title = 'Githubitat';
-  toggleControl = new FormControl(false);
+  toggleControl = new UntypedFormControl(false);
   isDarkSide : boolean = false;
 
   constructor(private store: Store,

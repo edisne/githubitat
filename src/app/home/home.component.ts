@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   }
   pageNumber = 1;
   pageSize = 12;
-  searchControl = new FormControl();
+  searchControl = new UntypedFormControl();
   searchTerm: string = '';
   searchResult$: Observable<User[]> | undefined;
 
